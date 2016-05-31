@@ -21,16 +21,11 @@ public class SafeGuardRegionService implements RegionService {
 
     @Override
     public Collection<Region> getRegions(World world) {
-        return SafeGuard.getZoneManager().getZones()
-                .stream()
-                .map(SafeGuardRegion::new)
-                .collect(Collectors.toList());
+        return SafeGuard.getZoneManager().getZones().stream().map(SafeGuardRegion::new).collect(Collectors.toList());
     }
 
     @Override
     public Stream<Region> getRegions(Location<World> location) {
-        return SafeGuard.getZoneManager()
-                .getZones(location)
-                .stream().map(SafeGuardRegion::new);
+        return SafeGuard.getZoneManager().getZones(location).stream().map(SafeGuardRegion::new);
     }
 }
