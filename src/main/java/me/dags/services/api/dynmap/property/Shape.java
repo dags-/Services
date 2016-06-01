@@ -8,7 +8,7 @@ import me.dags.services.api.query.Property;
 
 public interface Shape extends Property {
 
-    String name();
+    String displayName();
 
     interface Circular extends Shape {
 

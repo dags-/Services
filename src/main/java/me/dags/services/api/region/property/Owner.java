@@ -7,7 +7,7 @@ import me.dags.services.api.query.Property;
 
 public interface Owner extends Property {
 
-    Optional<String> ownerIdentifier();
+    Optional<String> owner();
 
-    Optional<Collection<String>> ownerIdentifiers();
+    Optional<Collection<String>> owners();
 }

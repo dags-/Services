@@ -8,9 +8,20 @@ import org.dynmap.DynmapCommonAPI;
 import org.dynmap.DynmapCommonAPIListener;
 import org.spongepowered.api.Sponge;
 
+import me.dags.services.api.dynmap.property.Description;
+import me.dags.services.api.dynmap.property.Shape;
+import me.dags.services.api.dynmap.property.ShapeStyle;
+import me.dags.services.api.query.Query;
 import me.dags.services.integration.UpdatableIntegration;
 
 public class DynmapMain extends DynmapCommonAPIListener implements UpdatableIntegration {
+
+    static final Query<Description> DESCRIPTION = new Query<>(Description.class);
+    static final Query<Shape> SHAPE = new Query<>(Shape.class);
+    static final Query<Shape.Circular> CIRCULAR = new Query<>(Shape.Circular.class);
+    static final Query<Shape.Polygonal> POLYGONAL = new Query<>(Shape.Polygonal.class);
+    static final Query<Shape.Rectangular> RECTANGULAR = new Query<>(Shape.Rectangular.class);
+    static final Query<ShapeStyle> SHAPE_STYLE = new Query<>(ShapeStyle.class);
 
     private DynmapWarps dynmapWarps = null;
     private DynmapRegions dynmapRegions = null;

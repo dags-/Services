@@ -1,7 +1,9 @@
 package me.dags.services.core.region.safeguard;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.entity.Entity;
@@ -17,12 +19,13 @@ import com.helion3.safeguard.zones.Zone;
 
 import me.dags.services.api.dynmap.property.Description;
 import me.dags.services.api.dynmap.property.Shape.Rectangular;
-import me.dags.services.api.dynmap.property.Style;
+import me.dags.services.api.dynmap.property.ShapeStyle;
 import me.dags.services.api.region.Region;
 import me.dags.services.api.region.property.Build;
 import me.dags.services.api.region.property.Damage;
+import me.dags.services.api.region.property.Owner;
 
-class SafeGuardRegion implements Region, Build, Damage, Rectangular, Description, Style {
+class SafeGuardRegion implements Region, Build, Damage, Owner, Rectangular, Description, ShapeStyle {
 
     private final Zone zone;
 
@@ -60,7 +63,23 @@ class SafeGuardRegion implements Region, Build, Damage, Rectangular, Description
     }
 
     @Override
-    public String name() {
+    public Optional<String> owner() {
+        return zone.getOwners().stream().filter(p -> p.getName().isPresent()).findFirst().flatMap(GameProfile::getName);
+    }
+
+    @Override
+    public Optional<Collection<String>> owners() {
+        List<String> names = new ArrayList<>();
+        for (GameProfile profile : zone.getOwners()) {
+            if (profile.getName().isPresent()) {
+                names.add(profile.getName().get());
+            }
+        }
+        return Optional.of(names);
+    }
+
+    @Override
+    public String displayName() {
         return zone.getName();
     }
 
@@ -78,11 +97,7 @@ class SafeGuardRegion implements Region, Build, Damage, Rectangular, Description
     public List<String> htmlLines() {
         List<String> lines = new ArrayList<>();
         lines.add("<b>owners:</b>");
-        for (GameProfile profile : zone.getOwners()) {
-            if (profile.getName().isPresent()) {
-                lines.add("<li>" + profile.getName().get() + "</li>");
-            }
-        }
+        owners().ifPresent(c -> c.forEach(s -> lines.add("<li>" + s + "</li>")));
         return lines;
     }
 

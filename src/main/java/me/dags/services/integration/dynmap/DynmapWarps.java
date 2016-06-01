@@ -13,7 +13,6 @@ import org.spongepowered.api.asset.Asset;
 import org.spongepowered.api.world.World;
 
 import me.dags.services.api.NamedService;
-import me.dags.services.api.dynmap.Dynmap;
 import me.dags.services.api.warp.Warp;
 import me.dags.services.api.warp.WarpMultiService;
 import me.dags.services.api.warp.WarpService;
@@ -61,7 +60,7 @@ public class DynmapWarps {
         marker.setLabel(label, true);
         marker.setLocation(world, x, y, z);
 
-        warp.accept(Dynmap.DESCRIPTION, m -> {
+        warp.accept(DynmapMain.DESCRIPTION, m -> {
             StringBuilder builder = new StringBuilder();
             Iterator<String> iterator = m.htmlLines().iterator();
             while (iterator.hasNext()) {

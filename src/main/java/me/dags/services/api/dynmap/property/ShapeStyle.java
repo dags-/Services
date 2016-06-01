@@ -2,7 +2,7 @@ package me.dags.services.api.dynmap.property;
 
 import me.dags.services.api.query.Property;
 
-public interface Style extends Property {
+public interface ShapeStyle extends Property {
 
     int lineColor();
 
