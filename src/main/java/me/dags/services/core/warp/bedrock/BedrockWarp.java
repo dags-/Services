@@ -1,4 +1,4 @@
-package me.dags.services.impl.warp.bedrock;
+package me.dags.services.core.warp.bedrock;
 
 import java.util.ArrayList;
 import java.util.List;

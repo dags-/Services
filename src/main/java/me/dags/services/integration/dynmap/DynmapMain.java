@@ -1,4 +1,4 @@
-package me.dags.services.integrations.dynmap;
+package me.dags.services.integration.dynmap;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,7 +9,7 @@ import org.dynmap.DynmapCommonAPIListener;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.plugin.PluginContainer;
 
-import me.dags.services.integrations.UpdatableIntegration;
+import me.dags.services.integration.UpdatableIntegration;
 
 public class DynmapMain extends DynmapCommonAPIListener implements UpdatableIntegration {
 

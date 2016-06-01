@@ -1,4 +1,4 @@
-package me.dags.services.impl.region.safeguard;
+package me.dags.services.core.region.safeguard;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package me.dags.services;
+package me.dags.services.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +21,9 @@ import me.dags.services.api.region.RegionMultiService;
 import me.dags.services.api.region.RegionService;
 import me.dags.services.api.warp.WarpMultiService;
 import me.dags.services.api.warp.WarpService;
-import me.dags.services.impl.region.safeguard.SafeGuardRegionService;
-import me.dags.services.impl.warp.bedrock.BedrockWarpService;
-import me.dags.services.integrations.Integration;
+import me.dags.services.core.region.safeguard.SafeGuardRegionService;
+import me.dags.services.core.warp.bedrock.BedrockWarpService;
+import me.dags.services.integration.Integration;
 
 @Plugin(name = "Services", id = "services", version = "1.0")
 public class Services {

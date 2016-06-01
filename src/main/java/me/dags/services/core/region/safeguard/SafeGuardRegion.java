@@ -1,4 +1,4 @@
-package me.dags.services.impl.region.safeguard;
+package me.dags.services.core.region.safeguard;
 
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.entity.Entity;

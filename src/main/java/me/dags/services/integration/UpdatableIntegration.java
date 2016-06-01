@@ -1,4 +1,4 @@
-package me.dags.services.integrations;
+package me.dags.services.integration;
 
 import java.util.Collection;
 

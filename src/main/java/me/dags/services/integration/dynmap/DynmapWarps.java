@@ -1,4 +1,4 @@
-package me.dags.services.integrations.dynmap;
+package me.dags.services.integration.dynmap;
 
 import java.io.IOException;
 import java.io.InputStream;
