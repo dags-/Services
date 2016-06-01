@@ -2,9 +2,7 @@ package me.dags.services.integrations.dynmap;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.Marker;
@@ -48,39 +46,30 @@ public class DynmapWarps {
     }
 
     private void refresh(Warp warp, MarkerSet markerSet) {
-        Marker marker = markerSet.findMarkerByLabel(warp.getName());
-        try {
-            MarkerIcon icon = warp.getMarker().map(this::getIcon).orElse(null);
-            String label = warp.getName();
-            String world = warp.getLocation().getExtent().getName();
-            double x = warp.getLocation().getX();
-            double y = warp.getLocation().getY();
-            double z = warp.getLocation().getZ();
-            boolean persistent = true;
-            if (marker == null) {
-                marker = markerSet.createMarker(null, label, world, x, y, z, icon, persistent);
-            } else {
-                marker.setLabel(label, persistent);
-                marker.setLocation(world, x, y, z);
-                marker.setMarkerIcon(icon);
-            }
-            applyMeta(warp, marker);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        MarkerIcon icon = warp.getMarker().map(this::getIcon).orElse(null);
+        String label = warp.getName();
+        String world = warp.getLocation().getExtent().getName();
+        double x = warp.getLocation().getX();
+        double y = warp.getLocation().getY();
+        double z = warp.getLocation().getZ();
 
-    private void applyMeta(Warp warp, Marker marker) {
-        StringBuilder builder = new StringBuilder();
-        List<String> lines = warp.test(Warp.META, m -> m.htmlLines()).orElse(Collections.emptyList());
-        Iterator<String> iterator = lines.iterator();
-        while (iterator.hasNext()) {
-            builder.append(iterator.next());
-            if (iterator.hasNext()) {
-                builder.append("<br>");
+        Marker existing = markerSet.findMarkerByLabel(warp.getName());
+        Marker marker = existing != null ? existing : markerSet.createMarker(null, label, world, x, y, z, icon, true);
+        marker.setMarkerIcon(icon);
+        marker.setLabel(label, true);
+        marker.setLocation(world, x, y, z);
+
+        warp.accept(Warp.META, m -> {
+            StringBuilder builder = new StringBuilder();
+            Iterator<String> iterator = m.htmlLines().iterator();
+            while (iterator.hasNext()) {
+                builder.append(iterator.next());
+                if (iterator.hasNext()) {
+                    builder.append("<br>");
+                }
             }
-        }
-        marker.setDescription(builder.toString());
+            marker.setDescription(builder.toString());
+        });
     }
 
     private String assetName(Asset asset) {
