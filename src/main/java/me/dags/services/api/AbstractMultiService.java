@@ -16,17 +16,17 @@ public abstract class AbstractMultiService<T extends NamedService> implements Mu
     }
 
     @Override
-    public Optional<T> getService(String name) {
-        return Optional.ofNullable(services.get(name));
+    public Optional<T> getService(String identifier) {
+        return Optional.ofNullable(services.get(identifier));
     }
 
     @Override
-    public boolean hasService(String name) {
-        return services.containsKey(name);
+    public boolean hasService(String identifier) {
+        return services.containsKey(identifier);
     }
 
     @Override
     public void register(T service) {
-        services.put(service.getName(), service);
+        services.put(service.getIdentifier(), service);
     }
 }

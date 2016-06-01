@@ -15,8 +15,13 @@ import me.dags.services.api.region.RegionService;
 public class SafeGuardRegionService implements RegionService {
 
     @Override
-    public String getName() {
-        return "safeguard";
+    public String getDisplayName() {
+        return "SafeGuard Regions";
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "safeguard_regions";
     }
 
     @Override

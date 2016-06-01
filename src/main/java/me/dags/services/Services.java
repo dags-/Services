@@ -3,12 +3,17 @@ package me.dags.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.ServiceManager;
+import org.spongepowered.api.text.Text;
 
+import me.dags.commandbus.CommandBus;
+import me.dags.commandbus.annotation.Caller;
+import me.dags.commandbus.annotation.Command;
 import me.dags.services.api.MultiService;
 import me.dags.services.api.NamedService;
 import me.dags.services.api.region.RegionMultiService;
@@ -17,6 +22,7 @@ import me.dags.services.api.warp.WarpMultiService;
 import me.dags.services.api.warp.WarpService;
 import me.dags.services.impl.region.safeguard.SafeGuardRegionService;
 import me.dags.services.impl.warp.bedrock.BedrockWarpService;
+import me.dags.services.integrations.Integration;
 
 @Plugin(name = "Services", id = "services", version = "1.0")
 public class Services {
@@ -25,19 +31,28 @@ public class Services {
     private static final RegionMultiService regionService = new RegionMultiService();
     private static final WarpMultiService warpService = new WarpMultiService();
 
+    private final Integration dynmap = new Integration("org.dynmap.DynmapCommonAPI", "me.dags.services.integrations.dynmap.DynmapMain");
+
     @Listener (order = Order.FIRST)
     public void preInit(GamePreInitializationEvent event) {
+        CommandBus.newInstance(logger).register(this).submit(this);
+
         ServiceManager manager = Sponge.getServiceManager();
         manager.setProvider(this, RegionMultiService.class, regionService);
         manager.setProvider(this, RegionService.class, regionService);
         manager.setProvider(this, WarpMultiService.class, warpService);
         manager.setProvider(this, WarpService.class, warpService);
-        register();
-    }
 
-    private void register() {
         register("bedrock", warpService, BedrockWarpService.class);
         register("safeguard", regionService, SafeGuardRegionService.class);
+
+        dynmap.init();
+    }
+
+    @Command(aliases = "refresh", parent = "service")
+    public void refresh(@Caller CommandSource source) {
+        source.sendMessage(Text.of("Refreshing...."));
+        dynmap.update();
     }
 
     private static <T extends NamedService, S extends T> void register(String pluginId, MultiService<T> multiService, Class<S> type) {

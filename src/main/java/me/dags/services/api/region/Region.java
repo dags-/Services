@@ -7,12 +7,12 @@ import com.flowpowered.math.vector.Vector3i;
 
 import me.dags.services.api.query.Query;
 import me.dags.services.api.query.Queryable;
-import me.dags.services.api.region.query.Build;
-import me.dags.services.api.region.query.Damage;
-import me.dags.services.api.region.query.Interact;
-import me.dags.services.api.region.query.Owner;
-import me.dags.services.api.region.query.Traverse;
-import me.dags.services.api.region.query.UseItem;
+import me.dags.services.api.region.property.Build;
+import me.dags.services.api.region.property.Damage;
+import me.dags.services.api.region.property.Interact;
+import me.dags.services.api.region.property.Owner;
+import me.dags.services.api.region.property.Traverse;
+import me.dags.services.api.region.property.UseItem;
 
 public interface Region extends Queryable<Region> {
 

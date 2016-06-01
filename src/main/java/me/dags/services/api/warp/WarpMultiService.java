@@ -1,17 +1,23 @@
 package me.dags.services.api.warp;
 
-import me.dags.services.api.AbstractMultiService;
-import org.spongepowered.api.world.Location;
-import org.spongepowered.api.world.World;
-
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
+
+import me.dags.services.api.AbstractMultiService;
+
 public class WarpMultiService extends AbstractMultiService<WarpService> implements WarpService {
 
     @Override
-    public String getName() {
+    public String getDisplayName() {
+        return "Warp Service";
+    }
+
+    @Override
+    public String getIdentifier() {
         return "warp_service";
     }
 

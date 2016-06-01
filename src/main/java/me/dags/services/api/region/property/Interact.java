@@ -1,4 +1,4 @@
-package me.dags.services.api.region.query;
+package me.dags.services.api.region.property;
 
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.entity.Entity;

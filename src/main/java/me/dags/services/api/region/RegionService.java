@@ -25,12 +25,10 @@ public interface RegionService extends NamedService {
         return getRegions(location).map(r -> r.map(query)).filter(o -> o.isPresent()).map(o -> o.get());
     }
 
-    // gets the region with the highest priority at the given location
     default Optional<Region> getTopRegion(Location<World> location) {
         return getRegions(location).max((r1, r2) -> r1.priority() > r2.priority() ? 1 : -1);
     }
 
-    // gets the region with the highest priority at the given location as the given query type
     default <T extends Property<Region>> Optional<T> getTopQuery(Location<World> location, Query<Region, T> query) {
         return getSortedRegions(location).map(r -> r.map(query)).filter(Optional::isPresent).map(Optional::get).findFirst();
     }

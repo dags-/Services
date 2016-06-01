@@ -16,8 +16,13 @@ import me.dags.services.api.warp.WarpService;
 public class BedrockWarpService implements WarpService {
 
     @Override
-    public String getName() {
-        return "bedrock";
+    public String getDisplayName() {
+        return "Bedrock Warps";
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "bedrock_warps";
     }
 
     @Override

@@ -10,8 +10,8 @@ import com.flowpowered.math.vector.Vector3i;
 import com.helion3.safeguard.zones.Zone;
 
 import me.dags.services.api.region.Region;
-import me.dags.services.api.region.query.Build;
-import me.dags.services.api.region.query.Damage;
+import me.dags.services.api.region.property.Build;
+import me.dags.services.api.region.property.Damage;
 
 class SafeGuardRegion implements Region, Build, Damage {
 

@@ -1,4 +1,4 @@
-package me.dags.services.api.region.query;
+package me.dags.services.api.region.property;
 
 import java.util.Collection;
 import java.util.Optional;

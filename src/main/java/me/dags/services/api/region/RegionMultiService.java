@@ -12,7 +12,12 @@ import me.dags.services.api.AbstractMultiService;
 public final class RegionMultiService extends AbstractMultiService<RegionService> implements RegionService {
 
     @Override
-    public String getName() {
+    public String getDisplayName() {
+        return "Region Service";
+    }
+
+    @Override
+    public String getIdentifier() {
         return "region_service";
     }
 
