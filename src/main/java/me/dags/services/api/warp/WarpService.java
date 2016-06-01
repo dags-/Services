@@ -7,7 +7,7 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import me.dags.services.api.NamedService;
-import me.dags.services.api.dynmap.property.Visibility;
+import me.dags.services.api.property.dynmap.Visibility;
 
 public interface WarpService extends NamedService, Visibility {
 

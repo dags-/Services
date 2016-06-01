@@ -7,7 +7,7 @@ import org.spongepowered.api.asset.Asset;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import me.dags.services.api.query.Queryable;
+import me.dags.services.api.property.Queryable;
 
 public interface Warp extends Queryable {
 

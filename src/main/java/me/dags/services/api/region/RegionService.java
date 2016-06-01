@@ -8,9 +8,9 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import me.dags.services.api.NamedService;
-import me.dags.services.api.dynmap.property.Visibility;
-import me.dags.services.api.query.Property;
-import me.dags.services.api.query.Query;
+import me.dags.services.api.property.Property;
+import me.dags.services.api.property.Query;
+import me.dags.services.api.property.dynmap.Visibility;
 
 public interface RegionService extends NamedService, Visibility {
 
