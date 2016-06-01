@@ -52,13 +52,11 @@ public class DynmapWarps {
         double x = warp.getLocation().getX();
         double y = warp.getLocation().getY();
         double z = warp.getLocation().getZ();
-
         Marker existing = markerSet.findMarkerByLabel(warp.getName());
         Marker marker = existing != null ? existing : markerSet.createMarker(null, label, world, x, y, z, icon, true);
         marker.setMarkerIcon(icon);
         marker.setLabel(label, true);
         marker.setLocation(world, x, y, z);
-
         warp.accept(Warp.META, m -> {
             StringBuilder builder = new StringBuilder();
             Iterator<String> iterator = m.htmlLines().iterator();

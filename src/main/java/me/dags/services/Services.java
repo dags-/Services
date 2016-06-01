@@ -6,6 +6,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.ServiceManager;
@@ -36,16 +37,17 @@ public class Services {
     @Listener (order = Order.FIRST)
     public void preInit(GamePreInitializationEvent event) {
         CommandBus.newInstance(logger).register(this).submit(this);
-
         ServiceManager manager = Sponge.getServiceManager();
         manager.setProvider(this, RegionMultiService.class, regionService);
         manager.setProvider(this, RegionService.class, regionService);
         manager.setProvider(this, WarpMultiService.class, warpService);
         manager.setProvider(this, WarpService.class, warpService);
+    }
 
+    @Listener
+    public void init(GameInitializationEvent event) {
         register("bedrock", warpService, BedrockWarpService.class);
         register("safeguard", regionService, SafeGuardRegionService.class);
-
         dynmap.init();
     }
 
