@@ -8,10 +8,11 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import me.dags.services.api.NamedService;
+import me.dags.services.api.dynmap.property.Visibility;
 import me.dags.services.api.query.Property;
 import me.dags.services.api.query.Query;
 
-public interface RegionService extends NamedService {
+public interface RegionService extends NamedService, Visibility {
 
     Collection<Region> getRegions(World world);
 
@@ -21,7 +22,7 @@ public interface RegionService extends NamedService {
         return getRegions(location).sorted((r1, r2) -> r1.priority()> r2.priority() ? -1 : 1);
     }
 
-    default <T extends Property<Region>> Stream<T> getRegions(Location<World> location, Query<Region, T> query) {
+    default <T extends Property> Stream<T> getRegions(Location<World> location, Query<T> query) {
         return getRegions(location).map(r -> r.map(query)).filter(o -> o.isPresent()).map(o -> o.get());
     }
 
@@ -29,7 +30,7 @@ public interface RegionService extends NamedService {
         return getRegions(location).max((r1, r2) -> r1.priority() > r2.priority() ? 1 : -1);
     }
 
-    default <T extends Property<Region>> Optional<T> getTopQuery(Location<World> location, Query<Region, T> query) {
+    default <T extends Property> Optional<T> getTopQuery(Location<World> location, Query<T> query) {
         return getSortedRegions(location).map(r -> r.map(query)).filter(Optional::isPresent).map(Optional::get).findFirst();
     }
 }

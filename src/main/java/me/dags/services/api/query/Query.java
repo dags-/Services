@@ -1,7 +1,7 @@
 package me.dags.services.api.query;
 
 
-public class Query<Q, T extends Property<Q>> {
+public class Query<T extends Property> {
 
     final Class<T> type;
 

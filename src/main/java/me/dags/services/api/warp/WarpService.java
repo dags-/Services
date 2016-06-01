@@ -7,12 +7,18 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import me.dags.services.api.NamedService;
+import me.dags.services.api.dynmap.property.Visibility;
 
-public interface WarpService extends NamedService {
+public interface WarpService extends NamedService, Visibility {
 
     Optional<Warp> getWarp(String name);
 
-    Collection<Warp> getWorldWarps(World world);
+    Collection<Warp> getWarps(World world);
 
     Collection<Warp> getNearbyWarps(Location<World> position, int radius);
+
+    @Override
+    default boolean hideByDefault() {
+        return false;
+    }
 }

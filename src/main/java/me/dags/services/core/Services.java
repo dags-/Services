@@ -32,7 +32,7 @@ public class Services {
     private static final RegionMultiService regionService = new RegionMultiService();
     private static final WarpMultiService warpService = new WarpMultiService();
 
-    private final Integration dynmap = new Integration("org.dynmap.DynmapCommonAPI", "me.dags.services.integrations.dynmap.DynmapMain");
+    private final Integration dynmap = new Integration("org.dynmap.DynmapCommonAPI", "me.dags.services.integration.dynmap.DynmapMain");
 
     @Listener (order = Order.FIRST)
     public void preInit(GamePreInitializationEvent event) {

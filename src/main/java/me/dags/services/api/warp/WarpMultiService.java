@@ -32,10 +32,10 @@ public class WarpMultiService extends AbstractMultiService<WarpService> implemen
     }
 
     @Override
-    public Collection<Warp> getWorldWarps(World world) {
+    public Collection<Warp> getWarps(World world) {
         return services.values()
                 .stream()
-                .flatMap(s -> s.getWorldWarps(world).stream())
+                .flatMap(s -> s.getWarps(world).stream())
                 .collect(Collectors.toList());
     }
 

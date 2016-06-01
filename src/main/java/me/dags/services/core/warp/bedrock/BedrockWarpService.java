@@ -35,7 +35,7 @@ public class BedrockWarpService implements WarpService {
     }
 
     @Override
-    public Collection<Warp> getWorldWarps(World world) {
+    public Collection<Warp> getWarps(World world) {
         return Bedrock.getWarpManager().getWarps().entrySet()
                 .stream()
                 .filter(e -> e.getValue().isPresent() && e.getValue().get().getExtent().equals(world))

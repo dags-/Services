@@ -1,9 +1,26 @@
 package me.dags.services.integration.dynmap;
 
-import org.dynmap.DynmapCommonAPI;
-import org.spongepowered.api.Sponge;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
 
+import org.dynmap.DynmapCommonAPI;
+import org.dynmap.markers.AreaMarker;
+import org.dynmap.markers.CircleMarker;
+import org.dynmap.markers.GenericMarker;
+import org.dynmap.markers.MarkerDescription;
+import org.dynmap.markers.MarkerSet;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.world.World;
+
+import com.flowpowered.math.vector.Vector3d;
+
+import me.dags.services.api.dynmap.Dynmap;
+import me.dags.services.api.dynmap.property.Description;
+import me.dags.services.api.dynmap.property.Shape;
+import me.dags.services.api.region.Region;
 import me.dags.services.api.region.RegionMultiService;
+import me.dags.services.api.region.RegionService;
 
 public class DynmapRegions {
 
@@ -15,6 +32,108 @@ public class DynmapRegions {
     }
 
     void refresh() {
+        for (World world : Sponge.getServer().getWorlds()) {
+            refreshWorld(world);
+        }
+    }
 
+    void refreshWorld(World world) {
+        for (RegionService service : regions.getAll()) {
+            for (Region region : service.getRegions(world)) {
+                refresh(service, region, world);
+            }
+        }
+    }
+
+    void refresh(RegionService service, Region region, World world) {
+        region.accept(Dynmap.SHAPE, r -> {
+            MarkerSet markerSet = dynmap.getMarkerAPI().getMarkerSet(service.getIdentifier());
+            markerSet = markerSet != null ? markerSet : dynmap.getMarkerAPI().createMarkerSet(service.getIdentifier(), service.getDisplayName(), null, false);
+            markerSet.setHideByDefault(service.hideByDefault());
+            refreshMarker(markerSet, region, r.name(), world.getName());
+        });
+    }
+
+    private void refreshMarker(MarkerSet markerSet, Region region, String name, String world) {
+        String id = (world + "_" + name).toLowerCase();
+
+        markerSet.getAreaMarkers().stream().filter(m -> m.getMarkerID().equals(id)).forEach(GenericMarker ::deleteMarker);
+        markerSet.getCircleMarkers().stream().filter(m -> m.getMarkerID().equals(id)).forEach(GenericMarker ::deleteMarker);
+
+        if (region.supports(Dynmap.CIRCULAR)) {
+            circular(markerSet, region, id, name, world);
+        } else if (region.supports(Dynmap.POLYGONAL)) {
+            polygonal(markerSet, region, id, name, world);
+        } else if (region.supports(Dynmap.RECTANGULAR)) {
+            rectangular(markerSet, region, id, name, world);
+        }
+    }
+
+    private void circular(MarkerSet markerSet, Region region, String id, String name, String world) {
+        Shape.Circular circle = region.map(Dynmap.CIRCULAR).get();
+        boolean html = true;
+        double x = circle.center().getX();
+        double y = circle.center().getY();
+        double z = circle.center().getZ();
+        double rad = circle.radius();
+        CircleMarker marker = markerSet.createCircleMarker(id, name, html, world, x, y, z, rad, rad, true);
+        region.accept(Dynmap.DESCRIPTION, description(marker));
+        region.accept(Dynmap.STYLE, s -> {
+            marker.setLineStyle(s.lineWeight(), s.lineOpacity(), s.lineColor());
+            marker.setFillStyle(s.fillOpacity(), s.fillColor());
+        });
+    }
+
+    private void polygonal(MarkerSet markerSet, Region region, String id, String name, String world) {
+        Shape.Polygonal polygon = region.map(Dynmap.POLYGONAL).get();
+        List<Vector3d> points = polygon.points();
+        boolean html = true;
+        double[] x = new double[points.size()];
+        double[] z = new double[points.size()];
+        for (int i = 0; i < points.size(); i++) {
+            x[i] = points.get(i).getX();
+            z[i] = points.get(i).getZ();
+        }
+        AreaMarker marker = markerSet.createAreaMarker(id, name, html, world, x, z, true);
+        region.accept(Dynmap.DESCRIPTION, description(marker));
+        region.accept(Dynmap.STYLE, s -> {
+            marker.setLineStyle(s.lineWeight(), s.lineOpacity(), s.lineColor());
+            marker.setFillStyle(s.fillOpacity(), s.fillColor());
+        });
+    }
+
+    private void rectangular(MarkerSet markerSet, Region region, String id, String name, String world) {
+        Shape.Rectangular polygon = region.map(Dynmap.RECTANGULAR).get();
+        boolean html = true;
+        double[] x = new double[4];
+        double[] z = new double[4];
+        x[0] = polygon.min().getX();
+        z[0] = polygon.min().getZ();
+        x[1] = polygon.min().getX();
+        z[1] = polygon.max().getZ();
+        x[2] = polygon.max().getX();
+        z[2] = polygon.max().getZ();
+        x[3] = polygon.max().getX();
+        z[3] = polygon.min().getZ();
+        AreaMarker marker = markerSet.createAreaMarker(id, name, html, world, x, z, true);
+        region.accept(Dynmap.DESCRIPTION, description(marker));
+        region.accept(Dynmap.STYLE, s -> {
+            marker.setLineStyle(s.lineWeight(), s.lineOpacity(), s.lineColor());
+            marker.setFillStyle(s.fillOpacity(), s.fillColor());
+        });
+    }
+
+    private Consumer<Description> description(MarkerDescription marker) {
+        return d -> {
+            StringBuilder builder = new StringBuilder();
+            Iterator<String> iterator = d.htmlLines().iterator();
+            while (iterator.hasNext()) {
+                builder.append(iterator.next());
+                if (iterator.hasNext()) {
+                    builder.append("<br>");
+                }
+            }
+            marker.setDescription(builder.toString());
+        };
     }
 }

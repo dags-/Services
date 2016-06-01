@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.DynmapCommonAPIListener;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.plugin.PluginContainer;
 
 import me.dags.services.integration.UpdatableIntegration;
 

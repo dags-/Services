@@ -7,9 +7,8 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.util.Tristate;
 
 import me.dags.services.api.query.Property;
-import me.dags.services.api.region.Region;
 
-public interface Interact extends Property<Region> {
+public interface Interact extends Property {
 
     Tristate canInteractBlock(Player player, BlockSnapshot block);
 

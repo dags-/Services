@@ -14,14 +14,14 @@ import me.dags.services.api.region.property.Owner;
 import me.dags.services.api.region.property.Traverse;
 import me.dags.services.api.region.property.UseItem;
 
-public interface Region extends Queryable<Region> {
+public interface Region extends Queryable {
 
-    Query<Region, Build> BUILD = new Query<>(Build.class);
-    Query<Region, Damage> DAMAGE = new Query<>(Damage.class);
-    Query<Region, Interact> INTERACT = new Query<>(Interact.class);
-    Query<Region, Owner> OWNER = new Query<>(Owner.class);
-    Query<Region, Traverse> TRAVERSE = new Query<>(Traverse.class);
-    Query<Region, UseItem> USE_ITEM = new Query<>(UseItem.class);
+    Query<Build> BUILD = new Query<>(Build.class);
+    Query<Damage> DAMAGE = new Query<>(Damage.class);
+    Query<Interact> INTERACT = new Query<>(Interact.class);
+    Query<Owner> OWNER = new Query<>(Owner.class);
+    Query<Traverse> TRAVERSE = new Query<>(Traverse.class);
+    Query<UseItem> USE_ITEM = new Query<>(UseItem.class);
 
     boolean contains(Vector3i position);
 

@@ -7,13 +7,9 @@ import org.spongepowered.api.asset.Asset;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import me.dags.services.api.query.Query;
 import me.dags.services.api.query.Queryable;
-import me.dags.services.api.warp.property.DisplayMeta;
 
-public interface Warp extends Queryable<Warp> {
-
-    Query<Warp, DisplayMeta> META = new Query<>(DisplayMeta.class);
+public interface Warp extends Queryable {
 
     String getName();
 

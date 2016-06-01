@@ -13,6 +13,7 @@ import org.spongepowered.api.asset.Asset;
 import org.spongepowered.api.world.World;
 
 import me.dags.services.api.NamedService;
+import me.dags.services.api.dynmap.Dynmap;
 import me.dags.services.api.warp.Warp;
 import me.dags.services.api.warp.WarpMultiService;
 import me.dags.services.api.warp.WarpService;
@@ -40,7 +41,8 @@ public class DynmapWarps {
 
     void refreshWorld(WarpService service, World world) {
         MarkerSet markerSet = getMarkerSet(service);
-        for (Warp warp : service.getWorldWarps(world)) {
+        markerSet.setHideByDefault(service.hideByDefault());
+        for (Warp warp : service.getWarps(world)) {
             refresh(warp, markerSet);
         }
     }
@@ -52,12 +54,14 @@ public class DynmapWarps {
         double x = warp.getLocation().getX();
         double y = warp.getLocation().getY();
         double z = warp.getLocation().getZ();
+
         Marker existing = markerSet.findMarkerByLabel(warp.getName());
         Marker marker = existing != null ? existing : markerSet.createMarker(null, label, world, x, y, z, icon, true);
         marker.setMarkerIcon(icon);
         marker.setLabel(label, true);
         marker.setLocation(world, x, y, z);
-        warp.accept(Warp.META, m -> {
+
+        warp.accept(Dynmap.DESCRIPTION, m -> {
             StringBuilder builder = new StringBuilder();
             Iterator<String> iterator = m.htmlLines().iterator();
             while (iterator.hasNext()) {

@@ -6,10 +6,10 @@ import java.util.List;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import me.dags.services.api.dynmap.property.Description;
 import me.dags.services.api.warp.Warp;
-import me.dags.services.api.warp.property.DisplayMeta;
 
-class BedrockWarp implements Warp, DisplayMeta {
+class BedrockWarp implements Warp, Description {
 
     private final String name;
     private final Location<World> location;
