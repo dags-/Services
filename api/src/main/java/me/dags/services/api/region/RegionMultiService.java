@@ -22,12 +22,12 @@ public final class RegionMultiService extends AbstractMultiService<RegionService
     }
 
     @Override
-    public Collection<Region> getRegions(World world) {
+    public Collection<? extends Region> getRegions(World world) {
         return services.values().stream().flatMap(s -> s.getRegions(world).stream()).collect(Collectors.toList());
     }
 
     @Override
-    public Stream<Region> getRegions(Location<World> location) {
+    public Stream<? extends Region> getRegions(Location<World> location) {
         return services.values().stream().flatMap(s -> s.getRegions(location));
     }
 }

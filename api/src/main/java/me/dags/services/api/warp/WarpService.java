@@ -11,11 +11,11 @@ import me.dags.services.api.property.dynmap.Visibility;
 
 public interface WarpService extends NamedService, Visibility {
 
-    Optional<Warp> getWarp(String name);
+    Optional<? extends Warp> getWarp(String name);
 
-    Collection<Warp> getWarps(World world);
+    Collection<? extends Warp> getWarps(World world);
 
-    Collection<Warp> getNearbyWarps(Location<World> position, int radius);
+    Collection<? extends Warp> getNearbyWarps(Location<World> position, int radius);
 
     @Override
     default boolean hideByDefault() {

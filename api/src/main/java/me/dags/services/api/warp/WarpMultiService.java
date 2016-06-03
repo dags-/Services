@@ -22,7 +22,7 @@ public class WarpMultiService extends AbstractMultiService<WarpService> implemen
     }
 
     @Override
-    public Optional<Warp> getWarp(String name) {
+    public Optional<? extends Warp> getWarp(String name) {
         return services.values()
                 .stream()
                 .map(s -> s.getWarp(name))
@@ -32,7 +32,7 @@ public class WarpMultiService extends AbstractMultiService<WarpService> implemen
     }
 
     @Override
-    public Collection<Warp> getWarps(World world) {
+    public Collection<? extends Warp> getWarps(World world) {
         return services.values()
                 .stream()
                 .flatMap(s -> s.getWarps(world).stream())
@@ -40,7 +40,7 @@ public class WarpMultiService extends AbstractMultiService<WarpService> implemen
     }
 
     @Override
-    public Collection<Warp> getNearbyWarps(Location<World> position, int radius) {
+    public Collection<? extends Warp> getNearbyWarps(Location<World> position, int radius) {
         return services.values()
                 .stream()
                 .flatMap(s -> s.getNearbyWarps(position, radius).stream())

@@ -14,11 +14,11 @@ import me.dags.services.api.property.dynmap.Visibility;
 
 public interface RegionService extends NamedService, Visibility {
 
-    Collection<Region> getRegions(World world);
+    Collection<? extends Region> getRegions(World world);
 
-    Stream<Region> getRegions(Location<World> location);
+    Stream<? extends Region> getRegions(Location<World> location);
 
-    default Stream<Region> getSortedRegions(Location<World> location) {
+    default Stream<? extends Region> getSortedRegions(Location<World> location) {
         return getRegions(location).sorted((r1, r2) -> r1.priority()> r2.priority() ? -1 : 1);
     }
 
@@ -26,7 +26,7 @@ public interface RegionService extends NamedService, Visibility {
         return getRegions(location).map(r -> r.map(query)).filter(o -> o.isPresent()).map(o -> o.get());
     }
 
-    default Optional<Region> getTopRegion(Location<World> location) {
+    default Optional<? extends Region> getTopRegion(Location<World> location) {
         return getRegions(location).max((r1, r2) -> r1.priority() > r2.priority() ? 1 : -1);
     }
 

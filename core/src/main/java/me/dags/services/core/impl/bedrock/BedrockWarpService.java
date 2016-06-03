@@ -26,7 +26,7 @@ public class BedrockWarpService implements WarpService {
     }
 
     @Override
-    public Optional<Warp> getWarp(String name) {
+    public Optional<BedrockWarp> getWarp(String name) {
         Optional<Location<World>> optional = Bedrock.getWarpManager().getWarp(name);
         if (optional.isPresent()) {
             return Optional.of(new BedrockWarp(name, optional.get()));
@@ -35,7 +35,7 @@ public class BedrockWarpService implements WarpService {
     }
 
     @Override
-    public Collection<Warp> getWarps(World world) {
+    public Collection<BedrockWarp> getWarps(World world) {
         return Bedrock.getWarpManager().getWarps().entrySet()
                 .stream()
                 .filter(e -> e.getValue().isPresent() && e.getValue().get().getExtent().equals(world))
@@ -45,7 +45,7 @@ public class BedrockWarpService implements WarpService {
     }
 
     @Override
-    public Collection<Warp> getNearbyWarps(Location<World> position, int radius) {
+    public Collection<BedrockWarp> getNearbyWarps(Location<World> position, int radius) {
         final int squared = radius * radius;
         final Vector3i pos = position.getBlockPosition();
         return Bedrock.getWarpManager().getWarps().entrySet()
