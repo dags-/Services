@@ -14,7 +14,7 @@ deploy:
   on:
     branch: master
 after_success:
-  - artefact="$(basename */target/services*.jar .jar)"
+  - artefact="$(basename core/target/services*.jar .jar)"
   - tag="$(cut -d '-' -f 2- <<< $artefact)"
   - git config --global user.name "Travis CI"
   - export GIT_TAG=$tag#$TRAVIS_BUILD_NUMBER
