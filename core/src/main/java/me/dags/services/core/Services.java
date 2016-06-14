@@ -56,7 +56,7 @@ public class Services {
         registerService("bedrock", warpService, BedrockWarpService.class);
         registerService("safeguard", regionService, SafeGuardRegionService.class);
 
-        registerIntegration("dynmap", "org.dynmap.DynmapCommonAPI", "me.dags.services.integration.dynmap.DynmapMain");
+        registerIntegration("dynmap", "org.dynmap.DynmapCommonAPI", "me.dags.services.core.integration.dynmap.DynmapMain");
         integrations.values().forEach(Integration::init);
     }
 
