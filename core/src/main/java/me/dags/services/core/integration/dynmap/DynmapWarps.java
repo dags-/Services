@@ -33,7 +33,9 @@ public class DynmapWarps {
     }
 
     void refreshService(WarpService service) {
-        dynmap.getMarkerAPI().getMarkerSets().forEach(MarkerSet::deleteMarkerSet);
+        dynmap.getMarkerAPI().getMarkerSets().stream()
+                .filter(m -> m.getMarkerSetID().startsWith(service.getIdentifier()))
+                .forEach(MarkerSet::deleteMarkerSet);
 
         for (World world : Sponge.getServer().getWorlds()) {
             refreshWorld(service, world);
