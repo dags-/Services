@@ -1,34 +1,30 @@
 package me.dags.services.core.integration.dynmap;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Consumer;
-
-import org.dynmap.DynmapCommonAPI;
-import org.dynmap.markers.AreaMarker;
-import org.dynmap.markers.CircleMarker;
-import org.dynmap.markers.GenericMarker;
-import org.dynmap.markers.MarkerDescription;
-import org.dynmap.markers.MarkerSet;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.world.World;
-
 import com.flowpowered.math.vector.Vector3d;
-
 import me.dags.services.api.property.Query;
 import me.dags.services.api.property.dynmap.Shape;
 import me.dags.services.api.property.meta.Description;
 import me.dags.services.api.region.Region;
 import me.dags.services.api.region.RegionMultiService;
 import me.dags.services.api.region.RegionService;
+import org.dynmap.DynmapCommonAPI;
+import org.dynmap.markers.*;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.world.World;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class DynmapRegions {
 
     private final RegionMultiService regions = Sponge.getServiceManager().provideUnchecked(RegionMultiService.class);
     private final DynmapCommonAPI dynmap;
+    private final DynmapMain main;
 
-    DynmapRegions(DynmapCommonAPI commonApi) {
+    DynmapRegions(DynmapMain main, DynmapCommonAPI commonApi) {
         this.dynmap = commonApi;
+        this.main = main;
     }
 
     void refresh() {
@@ -38,19 +34,20 @@ public class DynmapRegions {
     }
 
     void refreshWorld(World world) {
+        String mappedWorld = main.getWorldMapping(world.getName());
         for (RegionService service : regions.getAll()) {
             for (Region region : service.getRegions(world)) {
-                refresh(service, region, world);
+                refresh(service, region, mappedWorld);
             }
         }
     }
 
-    void refresh(RegionService service, Region region, World world) {
+    void refresh(RegionService service, Region region, String world) {
         region.accept(DynmapMain.SHAPE, r -> {
             MarkerSet markerSet = dynmap.getMarkerAPI().getMarkerSet(service.getIdentifier());
             markerSet = markerSet != null ? markerSet : dynmap.getMarkerAPI().createMarkerSet(service.getIdentifier(), service.getDisplayName(), null, false);
             markerSet.setHideByDefault(service.hideByDefault());
-            refreshMarker(markerSet, region, r.displayName(), world.getName());
+            refreshMarker(markerSet, region, r.displayName(), world);
         });
     }
 

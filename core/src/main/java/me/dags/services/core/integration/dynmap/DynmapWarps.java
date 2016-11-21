@@ -1,9 +1,10 @@
 package me.dags.services.core.integration.dynmap;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-
+import me.dags.services.api.NamedService;
+import me.dags.services.api.property.Query;
+import me.dags.services.api.warp.Warp;
+import me.dags.services.api.warp.WarpMultiService;
+import me.dags.services.api.warp.WarpService;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerIcon;
@@ -12,28 +13,28 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.asset.Asset;
 import org.spongepowered.api.world.World;
 
-import me.dags.services.api.NamedService;
-import me.dags.services.api.property.Query;
-import me.dags.services.api.warp.Warp;
-import me.dags.services.api.warp.WarpMultiService;
-import me.dags.services.api.warp.WarpService;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 
 public class DynmapWarps {
 
     private final WarpMultiService warpService = Sponge.getServiceManager().provideUnchecked(WarpMultiService.class);
+    private final DynmapMain main;
     private final DynmapCommonAPI dynmap;
 
-    DynmapWarps(DynmapCommonAPI commonApi) {
+    DynmapWarps(DynmapMain main, DynmapCommonAPI commonApi) {
+        this.main = main;
         this.dynmap = commonApi;
     }
 
     void refresh() {
-        for (WarpService service : warpService.getAll()) {
-            refreshService(service);
-        }
+        warpService.getAll().forEach(this::refreshService);
     }
 
     void refreshService(WarpService service) {
+        dynmap.getMarkerAPI().getMarkerSets().forEach(MarkerSet::deleteMarkerSet);
+
         for (World world : Sponge.getServer().getWorlds()) {
             refreshWorld(service, world);
         }
@@ -50,13 +51,14 @@ public class DynmapWarps {
     private void refresh(Warp warp, MarkerSet markerSet) {
         MarkerIcon icon = warp.getMarker().map(this::getIcon).orElse(null);
         String label = warp.getName();
-        String world = warp.getLocation().getExtent().getName();
+        String world = main.getWorldMapping(warp.getLocation().getExtent().getName());
+        String id = (world + "_" + label).toLowerCase();
         double x = warp.getLocation().getX();
         double y = warp.getLocation().getY();
         double z = warp.getLocation().getZ();
 
-        Marker existing = markerSet.findMarkerByLabel(warp.getName());
-        Marker marker = existing != null ? existing : markerSet.createMarker(null, label, world, x, y, z, icon, true);
+        Marker existing = markerSet.findMarker(id);
+        Marker marker = existing != null ? existing : markerSet.createMarker(id, label, world, x, y, z, icon, true);
         marker.setMarkerIcon(icon);
         marker.setLabel(label, true);
         marker.setLocation(world, x, y, z);
