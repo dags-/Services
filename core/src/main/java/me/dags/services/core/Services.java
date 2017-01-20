@@ -13,8 +13,7 @@ import me.dags.services.api.region.RegionMultiService;
 import me.dags.services.api.region.RegionService;
 import me.dags.services.api.warp.WarpMultiService;
 import me.dags.services.api.warp.WarpService;
-import me.dags.services.core.impl.bedrock.BedrockWarpService;
-import me.dags.services.core.impl.safeguard.SafeGuardRegionService;
+import me.dags.services.core.impl.nucleus.NucleusWarpService;
 import me.dags.services.core.integration.Integration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +64,7 @@ public class Services {
         CommandBus.builder().logger(logger).build().register(this).submit(this);
 
         // Most dependencies should be initialized by now so register services etc here
-        registerService("bedrock", warpService, BedrockWarpService.class);
-        registerService("safeguard", regionService, SafeGuardRegionService.class);
+        registerService("nucleus", warpService, NucleusWarpService.class);
 
         registerIntegration("dynmap", "org.dynmap.DynmapCommonAPI", "me.dags.services.core.integration.dynmap.DynmapMain");
         integrations.values().forEach(Integration::init);
@@ -80,10 +78,10 @@ public class Services {
         } else {
             Optional<Integration> integration = getIntegration(id);
             if (integration.isPresent()) {
-                Format.DEFAULT.info("Refreshing {}...", id).tell(source);
+                Format.DEFAULT.info("Refreshing service  {}...", id).tell(source);
                 integration.get().update();
             } else {
-                Format.DEFAULT.error("Could not find {}", id).tell(source);
+                Format.DEFAULT.error("Could not find service {}", id).tell(source);
             }
         }
     }

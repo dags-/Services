@@ -1,9 +1,9 @@
 package me.dags.services.api.property.meta;
 
+import me.dags.services.api.property.Property;
+
 import java.util.Collection;
 import java.util.Optional;
-
-import me.dags.services.api.property.Property;
 
 public interface Owner extends Property {
 
