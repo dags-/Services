@@ -57,7 +57,7 @@ public class NucleusWarp implements Warp, Description, Comparable<NucleusWarp> {
     }
 
     @Override
-    public int compareTo(NucleusWarp nucleusWarp) {
-        return nucleusWarp.getName().toLowerCase().compareTo(this.getName().toLowerCase());
+    public int compareTo(NucleusWarp other) {
+        return this.getName().toLowerCase().compareTo(other.getName().toLowerCase());
     }
 }
