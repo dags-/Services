@@ -6,7 +6,7 @@ import me.dags.commandbus.annotation.Caller;
 import me.dags.commandbus.annotation.Command;
 import me.dags.commandbus.annotation.One;
 import me.dags.commandbus.annotation.Permission;
-import me.dags.commandbus.utils.Format;
+import me.dags.commandbus.format.FMT;
 import me.dags.services.api.MultiService;
 import me.dags.services.api.NamedService;
 import me.dags.services.api.region.RegionMultiService;
@@ -70,18 +70,19 @@ public class Services {
         integrations.values().forEach(Integration::init);
     }
 
-    @Command(aliases = "refresh", parent = "service", perm = @Permission("services.refresh"))
+    @Permission("services.refresh")
+    @Command(alias = "refresh", parent = "service")
     public void refreshCommand(@Caller CommandSource source, @One String id) {
         if (id.equalsIgnoreCase("all")) {
-            Format.DEFAULT.info("Refreshing all services...").tell(source);
+            FMT.info("Refreshing all services...").tell(source);
             integrations.values().forEach(Integration::update);
         } else {
             Optional<Integration> integration = getIntegration(id);
             if (integration.isPresent()) {
-                Format.DEFAULT.info("Refreshing service  {}...", id).tell(source);
+                FMT.info("Refreshing service  {}...", id).tell(source);
                 integration.get().update();
             } else {
-                Format.DEFAULT.error("Could not find service {}", id).tell(source);
+                FMT.error("Could not find service {}", id).tell(source);
             }
         }
     }

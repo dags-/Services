@@ -5,7 +5,7 @@ import me.dags.commandbus.annotation.Caller;
 import me.dags.commandbus.annotation.Command;
 import me.dags.commandbus.annotation.One;
 import me.dags.commandbus.annotation.Permission;
-import me.dags.commandbus.utils.Format;
+import me.dags.commandbus.format.FMT;
 import me.dags.data.node.Node;
 import me.dags.data.node.NodeObject;
 import me.dags.services.api.property.Query;
@@ -65,9 +65,10 @@ public class DynmapMain extends DynmapCommonAPIListener implements UpdatableInte
         }
     }
 
-    @Command(aliases = "map", parent = "dynworld", perm = @Permission("service.dynmap.commands"))
+    @Permission("service.dynmap.commands")
+    @Command(alias = "map", parent = "dynworld")
     public void setWorldMapping(@Caller CommandSource source, @One("world") String world, @One("mapping") String mapping) {
-        Format.DEFAULT.info("Set world mapping ").stress(world).info("=").stress(mapping).tell(source);
+        FMT.info("Set world mapping ").stress(world).info("=").stress(mapping).tell(source);
         NodeObject mappings = config.getObject("world_mappings");
         mappings = mappings.isPresent() ? mappings : new NodeObject();
         mappings.put(world, mapping);
