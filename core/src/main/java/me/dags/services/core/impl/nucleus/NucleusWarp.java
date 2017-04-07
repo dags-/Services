@@ -1,6 +1,5 @@
 package me.dags.services.core.impl.nucleus;
 
-import io.github.nucleuspowered.nucleus.api.data.WarpData;
 import me.dags.services.api.property.meta.Description;
 import me.dags.services.api.warp.Warp;
 import org.spongepowered.api.world.Location;
@@ -14,16 +13,16 @@ import java.util.List;
  */
 public class NucleusWarp implements Warp, Description, Comparable<NucleusWarp> {
 
+    private final double cost;
     private final String name;
     private final String category;
-    private final int cost;
     private final Location<World> location;
 
-    NucleusWarp(WarpData warpData) {
-        this.name = warpData.getName();
-        this.category = warpData.getCategory().orElse("");
-        this.cost = warpData.getCost().orElse(-1);
-        this.location = warpData.getLocation().get();
+    NucleusWarp(Location<World> location, String name, String category, double cost) {
+        this.cost = cost;
+        this.name = name;
+        this.category = category;
+        this.location = location;
     }
 
     @Override

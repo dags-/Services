@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>servicescore</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>ServicesCore</name>
 
@@ -67,6 +67,10 @@
             <url>http://repo.mikeprimm.com/</url>
         </repository>
         <repository>
+            <id>drnaylor-repo</id>
+            <url>http://repo.drnaylor.co.uk/artifactory/list/minecraft</url>
+        </repository>
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -86,33 +90,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.NucleusPowered</groupId>
-            <artifactId>Nucleus</artifactId>
-            <version>0.19.1</version>
+            <groupId>io.github.nucleuspowered</groupId>
+            <artifactId>nucleus-api</artifactId>
+            <version>0.27.0-S5.1</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>uk.co.drnaylor</groupId>
-                    <artifactId>quickstart-moduleloader</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.github.nucleuspowered</groupId>
-                    <artifactId>NucleusMixins</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.maxmind.geoip2</groupId>
-                    <artifactId>geoip2</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.github.hsyyid</groupId>
-                    <artifactId>EssentialCmds</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.dags-</groupId>
             <artifactId>CommandBus</artifactId>
-            <version>1.6.0-RC3</version>
+            <version>1.6.0-RC4</version>
         </dependency>
         <dependency>
             <groupId>com.github.dags-</groupId>
