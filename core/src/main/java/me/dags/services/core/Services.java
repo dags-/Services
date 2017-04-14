@@ -13,6 +13,7 @@ import me.dags.services.api.region.RegionMultiService;
 import me.dags.services.api.region.RegionService;
 import me.dags.services.api.warp.WarpMultiService;
 import me.dags.services.api.warp.WarpService;
+import me.dags.services.core.impl.bedrock.BedrockWarpService;
 import me.dags.services.core.impl.nucleus.NucleusWarpService;
 import me.dags.services.core.integration.Integration;
 import org.slf4j.Logger;
@@ -65,6 +66,7 @@ public class Services {
 
         // Most dependencies should be initialized by now so register services etc here
         registerService("nucleus", warpService, NucleusWarpService.class);
+        registerService("bedrock", warpService, BedrockWarpService.class);
 
         registerIntegration("dynmap", "org.dynmap.DynmapCommonAPI", "me.dags.services.core.integration.dynmap.DynmapMain");
         integrations.values().forEach(Integration::init);
@@ -79,7 +81,7 @@ public class Services {
         } else {
             Optional<Integration> integration = getIntegration(id);
             if (integration.isPresent()) {
-                FMT.info("Refreshing service  {}...", id).tell(source);
+                FMT.info("Refreshing service {}...", id).tell(source);
                 integration.get().update();
             } else {
                 FMT.error("Could not find service {}", id).tell(source);

@@ -86,6 +86,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.ArdaCraft</groupId>
+            <artifactId>Bedrock</artifactId>
+            <version>1.1-beta</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.NucleusPowered</groupId>
             <artifactId>Nucleus</artifactId>
             <version>0.19.1</version>
@@ -112,7 +117,7 @@
         <dependency>
             <groupId>com.github.dags-</groupId>
             <artifactId>CommandBus</artifactId>
-            <version>1.6.0-RC3</version>
+            <version>1.6.0-RC4</version>
         </dependency>
         <dependency>
             <groupId>com.github.dags-</groupId>
