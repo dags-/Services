@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Plugin(name = "Services", id = "services", version = "1.1.1")
+@Plugin(name = "Services", id = "services", version = "1.2", description = "A bridge between similar, plugin-provided, services")
 public class Services {
 
     private static final Logger logger = LoggerFactory.getLogger("Services");
