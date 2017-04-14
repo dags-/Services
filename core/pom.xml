@@ -93,6 +93,7 @@
             <groupId>com.github.ArdaCraft</groupId>
             <artifactId>Bedrock</artifactId>
             <version>1.1-beta</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.github.nucleuspowered</groupId>
