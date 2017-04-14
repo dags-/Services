@@ -14,7 +14,7 @@ import me.dags.services.api.region.RegionService;
 import me.dags.services.api.warp.WarpMultiService;
 import me.dags.services.api.warp.WarpService;
 import me.dags.services.core.impl.bedrock.BedrockWarpService;
-import me.dags.services.core.impl.nucleus.NucleusWarpService;
+import me.dags.services.core.impl.nucleus.NucleusWarpsService;
 import me.dags.services.core.integration.Integration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +23,10 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
-import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.ServiceManager;
 
 import java.nio.file.Path;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Plugin(name = "Services", id = "services", version = "1.1")
+@Plugin(name = "Services", id = "services", version = "1.1.1")
 public class Services {
 
     private static final Logger logger = LoggerFactory.getLogger("Services");
@@ -61,15 +62,17 @@ public class Services {
     }
 
     @Listener
-    public void postInit(GamePostInitializationEvent event) {
+    public void postInit(GameInitializationEvent event) {
         CommandBus.builder().logger(logger).build().register(this).submit(this);
 
-        // Most dependencies should be initialized by now so register services etc here
-        registerService("nucleus", warpService, NucleusWarpService.class);
-        registerService("bedrock", warpService, BedrockWarpService.class);
+        Task.builder().execute(() -> {
+            // Most dependencies should be initialized by now so register services etc here
+            registerService("nucleus", warpService, NucleusWarpsService.class);
+            registerService("bedrock", warpService, BedrockWarpService.class);
 
-        registerIntegration("dynmap", "org.dynmap.DynmapCommonAPI", "me.dags.services.core.integration.dynmap.DynmapMain");
-        integrations.values().forEach(Integration::init);
+            registerIntegration("dynmap", "org.dynmap.DynmapCommonAPI", "me.dags.services.core.integration.dynmap.DynmapMain");
+            integrations.values().forEach(Integration::init);
+        }).submit(this);
     }
 
     @Permission("services.refresh")
