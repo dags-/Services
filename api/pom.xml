@@ -5,11 +5,11 @@
     <parent>
         <groupId>me.dags</groupId>
         <artifactId>services</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>servicesapi</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>ServicesAPI</name>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>org.spongepowered</groupId>
             <artifactId>spongeapi</artifactId>
-            <version>5.1.0-SNAPSHOT</version>
+            <version>7.1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

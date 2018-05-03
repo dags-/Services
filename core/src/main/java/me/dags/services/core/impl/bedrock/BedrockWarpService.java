@@ -26,11 +26,7 @@ public class BedrockWarpService implements WarpService {
 
     @Override
     public Optional<BedrockWarp> getWarp(String name) {
-        Optional<Location<World>> optional = Bedrock.getWarpManager().getWarp(name);
-        if (optional.isPresent()) {
-            return Optional.of(new BedrockWarp(name, optional.get()));
-        }
-        return Optional.empty();
+        return Bedrock.getWarpManager().getWarp(name).map(location -> new BedrockWarp(name, location));
     }
 
     @Override

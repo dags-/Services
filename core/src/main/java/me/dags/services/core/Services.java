@@ -1,12 +1,16 @@
 package me.dags.services.core;
 
 import com.google.inject.Inject;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import me.dags.commandbus.CommandBus;
-import me.dags.commandbus.annotation.Caller;
 import me.dags.commandbus.annotation.Command;
-import me.dags.commandbus.annotation.One;
 import me.dags.commandbus.annotation.Permission;
-import me.dags.commandbus.format.FMT;
+import me.dags.commandbus.annotation.Src;
+import me.dags.commandbus.fmt.Fmt;
+import me.dags.commandbus.fmt.PagFormatter;
 import me.dags.services.api.MultiService;
 import me.dags.services.api.NamedService;
 import me.dags.services.api.region.RegionMultiService;
@@ -14,7 +18,6 @@ import me.dags.services.api.region.RegionService;
 import me.dags.services.api.warp.WarpMultiService;
 import me.dags.services.api.warp.WarpService;
 import me.dags.services.core.impl.bedrock.BedrockWarpService;
-import me.dags.services.core.impl.nucleus.NucleusWarpsService;
 import me.dags.services.core.integration.Integration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +31,7 @@ import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.ServiceManager;
-
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import org.spongepowered.api.text.action.TextActions;
 
 @Plugin(name = "Services", id = "services", version = "1.2", description = "A bridge between similar, plugin-provided, services")
 public class Services {
@@ -63,11 +62,10 @@ public class Services {
 
     @Listener
     public void postInit(GameInitializationEvent event) {
-        CommandBus.builder().logger(logger).build().register(this).submit(this);
+        CommandBus.create(this).register(this).submit();
 
         Task.builder().execute(() -> {
             // Most dependencies should be initialized by now so register services etc here
-            registerService("nucleus", warpService, NucleusWarpsService.class);
             registerService("bedrock", warpService, BedrockWarpService.class);
 
             registerIntegration("dynmap", "org.dynmap.DynmapCommonAPI", "me.dags.services.core.integration.dynmap.DynmapMain");
@@ -75,19 +73,31 @@ public class Services {
         }).submit(this);
     }
 
+    @Permission("services.list")
+    @Command("service list")
+    public void listCommand(@Src CommandSource source) {
+        PagFormatter fmt = Fmt.copy().list();
+        fmt.header().stress("Services:");
+        fmt.line().info("- all").command("/service refresh all");
+        integrations.keySet().stream().sorted()
+                .forEach(s -> fmt.line().info("- %s", s)
+                        .command("/service refresh %s", s));
+        fmt.build().sendTo(source);
+    }
+
     @Permission("services.refresh")
-    @Command(alias = "refresh", parent = "service")
-    public void refreshCommand(@Caller CommandSource source, @One String id) {
+    @Command("service refresh <id>")
+    public void refreshCommand(@Src CommandSource source, String id) {
         if (id.equalsIgnoreCase("all")) {
-            FMT.info("Refreshing all services...").tell(source);
+            Fmt.info("Refreshing all services...").tell(source);
             integrations.values().forEach(Integration::update);
         } else {
             Optional<Integration> integration = getIntegration(id);
             if (integration.isPresent()) {
-                FMT.info("Refreshing service {}...", id).tell(source);
+                Fmt.info("Refreshing service {}...", id).tell(source);
                 integration.get().update();
             } else {
-                FMT.error("Could not find service {}", id).tell(source);
+                Fmt.error("Could not find service {}", id).tell(source);
             }
         }
     }
